@@ -1,0 +1,125 @@
+texto = input()
+#divide em caracteres
+text = list(texto)
+espaco_em_branco = []
+informal = []
+minuscula = []
+maiuscula= []
+pontuacao = []
+ultimoEsp = 0
+#analisa todos os caracteres da string
+for i in range(len(texto)):
+    #verifica onde tem espaco
+    if texto[i] == ' ':
+    #verifica a condição de que não pode haver dois ou mais espaços em branco seguidos	
+        if texto[i + 1] == ' ' and texto[i-1] != '"':
+            espaco_em_branco.append(i + 1)
+            #pula o espcaco
+            i +=1
+#verifica se a primeira letra e maiuscula
+if texto[0].isdigit():
+    pass
+else:
+    if not texto[0].isupper():
+        minuscula.append(0)
+#cria uma lista de palavras
+palavras = texto.split(' ')
+cont = 0
+#analisa cada palavra
+for i in palavras:
+    if i != '':
+        word = str(i)
+        ctn = 0
+        #tira a pontuacao
+        for l in word:
+            ctn +=1
+            if l == ',' or l=='.' or l =='"':
+                word = word[:ctn-1]
+        #verifica integridade
+        if word.isdigit() or word.isalpha():
+            pass
+        else:
+            #identifica o indice do erro
+            for j in range(len(word)):
+                    if word[j].isdigit():
+                        informal.append(j+cont)
+        for j in range(len(i)):
+            if i[j] =='.' and i[j] != i[len(i)-1]:
+                #verifica se ha ponto no meio de palavras
+                pontuacao.append(j+cont)
+    cont += len(i) +1
+for i in range(len(text)):
+    #acha as pontuaceos
+    if text[i] == '.' or text[i] == ',':
+        #verifica se estao no meio de espacos
+        if text[i-1] == ' ' and text[i+1] == ' ':
+            pontuacao.append(i)
+        #verifica se estao no meio de palavras
+        if text[i-1] == type(str) and text[i+1] == type(str):
+            pontuacao.append(i)
+        #verifica se a proxima sentenca comeca com maiuscula
+        if text[i] == '.' and i != (len(text)-1):
+            if text[i+2].islower() and text[i+1] == ' ':
+                minuscula.append(i+2)
+#verifica casos indesejados
+l = 0
+lista = []
+for j in text:
+    l+=1
+    if j == '"':
+        lista.append(l)
+for i in range(len(text)):
+    if text[i] == ' ':
+        #divide o texto em palavras
+        palavra = text[ultimoEsp:i]
+        #verifica se ha maiusculas no meio de palavras
+        k = 0
+        for letra in palavra:
+            k +=1
+            if letra.isupper() and letra != text[0] and text[i-(len(palavra))-2] != '.':
+                maiuscula.append(i -(len(palavra)-k)-1)
+        ultimoEsp = i +1
+par = 0
+#procura aspas duplas no texto
+for i in range(len(text)):
+    if text[i] == '"':
+        par+=1
+        ans = i
+        #procura o par
+        for j in range(len(text[i:])):
+            if j == '"':
+                par +=1
+                break
+
+#caso as aspas nao tenham par,append na ultima aspas
+if par % 2 != 0:
+    pontuacao.append(ans)
+#tira casos indesejados
+maiusculadef = []
+if len(lista) >=2:
+    for p in maiuscula:
+        if p in range(lista[0],lista[1]):
+            pass
+        else:
+            maiusculadef.append(p)
+    maiuscula = maiusculadef
+#printa o resultado
+if len(espaco_em_branco) == 0 and len(informal) == 0 and len(maiuscula) == 0 and len(minuscula) == 0 and len(pontuacao) == 0:
+    print('SIM')
+else:
+    print('NAO')
+    if len(espaco_em_branco)>0:
+        print(f'ESPACO EM BRANCO')
+        print(*espaco_em_branco)
+    if len(informal)>0:
+        print(f'INFORMAL')
+        print(*informal)
+    if len(maiuscula)>0:
+        print(f'MAIUSCULA')
+        print(*maiuscula)
+    if len(minuscula)>0:
+        print(f'MINUSCULA')
+        print(*minuscula)
+    if len(pontuacao)>0:
+        print(f'PONTUACAO')
+        print(*pontuacao)
